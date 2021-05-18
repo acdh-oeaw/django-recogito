@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{{ object.title }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="{% static 'recogito/recogito.min.css' %}" rel="stylesheet">
+  <script type="text/javascript" src="{% static 'recogito/recogito.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>{{ object.title }}</h1>
+</div>
+  
+<div class="container">
+    <div id="annotationcontent">
+      {{ object.text }}
+    </div> 
+</div>
+
+
+<script type="text/javascript">
+  // An example annotation we'll add/remove via JavaScript
+  const csrftoken = Cookies.get('csrftoken');
+  const target = {
+    re_app: 'example',
+    re_model: 'mytext',
+    re_field_name: 'text',
+    re_object_id: '{{ object.id }}',
+  };
+  const fetch_params = {...target, ...{format: 'recogito'}};
+  const baseUrl = window.location.origin;
+  const url = new URL("/api/recogitoannotations/", baseUrl)
+  url.search = new URLSearchParams(fetch_params)
+  fetchUrl = url.toString()
+  console.log(url.toString());
+  (function() {
+    // Intialize Recogito
+    var r = Recogito.init({
+      content: 'annotationcontent', // Element id or DOM node to attach to
+      locale: 'de',
+      mode: 'pre',
+      widgets: [
+        'COMMENT',
+        { widget: 'TAG', vocabulary: [ 'Place', 'Person', 'Event', 'Organization', 'Animal' ] }
+      ],
+      relationVocabulary: [ 'isRelated', 'isPartOf', 'isSameAs ']
+    });
+
+    r.loadAnnotations(fetchUrl);
+    r.on('selectAnnotation', function(a) {
+      console.log('selected', a);
+    });
+
+    r.on('createAnnotation', function(a) {
+      console.log('created', a);
+      var re_id = a['id'].slice(1);
+      var new_annotation = {
+        re_id: re_id,
+      }
+      var merged = {
+        ...target,
+        ...new_annotation,
+        re_payload: a
+      }
+
+      fetch('/api/recogitoannotations/', {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(merged),
+      })
+      .then(response => response.json())
+      .then(merged => {
+        console.log('Success:', merged);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+
+    r.on('updateAnnotation', function(annotation, previous) {
+      console.log('updated', previous, 'with', annotation);
+    });
+  })();
+</script>
+
+</body>
+</html>
