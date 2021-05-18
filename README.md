@@ -1,6 +1,10 @@
 # django-recogito
 
+[![Test](https://github.com/acdh-oeaw/django-recogito/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/acdh-oeaw/django-recogito/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/acdh-oeaw/django-recogito/branch/master/graph/badge.svg?token=mX5llsx4Fz)](https://codecov.io/gh/acdh-oeaw/django-recogito)
+
 A python package to integrate [recogito-js](https://github.com/recogito/recogito-js) in a django-project
+
 
 ## install
 
