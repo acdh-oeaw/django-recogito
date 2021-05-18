@@ -1,6 +1,6 @@
 # django-recogito
 
-[![pypi](https://badge.fury.io/py/django-recogito)](https://badge.fury.io/py/django-recogito)
+[![pypi](https://badge.fury.io/py/django-recogito.svg)](https://badge.fury.io/py/django-recogito)
 [![Test](https://github.com/acdh-oeaw/django-recogito/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/acdh-oeaw/django-recogito/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/acdh-oeaw/django-recogito/branch/master/graph/badge.svg?token=mX5llsx4Fz)](https://codecov.io/gh/acdh-oeaw/django-recogito)
 
