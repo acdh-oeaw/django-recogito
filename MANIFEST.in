@@ -1,0 +1,2 @@
+recursive-include recogito/static *
+recursive-include recogito/templates *
