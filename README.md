@@ -47,5 +47,8 @@ urlpatterns = [
 
 run migrations `python manage.py migrate`
 
+## local testing
 
-
+- Load example data: `python manage.py loaddata example/fixtures/fixtures.json`
+- Start testserver: `python manage.py runserver`
+- Visit <http://localhost:8000/my-text/1/>
